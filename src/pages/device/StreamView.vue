@@ -84,6 +84,9 @@ export default {
       }
     },
     close() {
+      if (this.flvPlayer) {
+        this.flvPlayer.destroy();
+      }
       this.$emit('close')
     }
   }
