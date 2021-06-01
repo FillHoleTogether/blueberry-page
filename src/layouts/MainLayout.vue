@@ -51,9 +51,14 @@ export default {
     return {
       left: false,
       menuList: [{
-        icon: 'video_camera_back',
+        icon: 'list',
         label: '设备列表',
         to: '/devices',
+        separator: true
+      },{
+        icon: 'videocam',
+        label: '视频列表',
+        to: '/streams',
         separator: true
       }]
     }

@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import StreamView from "pages/device/StreamView";
+import StreamView from "pages/device/StreamViewer";
 export default {
   name: "ChannelList",
   components: {StreamView},
@@ -60,7 +60,8 @@ export default {
         rowsPerPage: 0
       },
       currentChannelId: null,
-      showStreamView: false
+      showStreamView: false,
+      refreshInterval: null
     }
   },
   computed: {
@@ -73,7 +74,18 @@ export default {
     }
   },
   mounted() {
-    this.queryChannelList();
+    const app = this;
+    app.queryChannelList();
+    if (app.refreshInterval) {
+      clearInterval(app.refreshInterval);
+    }
+    app.refreshInterval = setInterval(() => app.queryChannelList(), 10000);
+  },
+  destroyed() {
+    const app = this;
+    if (app.refreshInterval) {
+      clearInterval(app.refreshInterval);
+    }
   },
   methods: {
     queryChannelList() {

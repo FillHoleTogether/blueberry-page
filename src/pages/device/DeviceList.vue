@@ -47,11 +47,23 @@ export default {
       ],
       pagination: {
         rowsPerPage: 0
-      }
+      },
+      refreshInterval: null
     }
   },
   mounted() {
-    this.queryDeviceList();
+    const app = this;
+    app.queryDeviceList();
+    if (app.refreshInterval) {
+      clearInterval(app.refreshInterval);
+    }
+    app.refreshInterval = setInterval(() => app.queryDeviceList(), 10000);
+  },
+  destroyed() {
+    const app = this;
+    if (app.refreshInterval) {
+      clearInterval(app.refreshInterval);
+    }
   },
   methods: {
     queryDeviceList() {

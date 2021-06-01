@@ -18,3 +18,5 @@ const instance = axios.create({
 })
 
 Vue.prototype.$axios = instance
+Vue.prototype.$baseUrl = baseUrl
+

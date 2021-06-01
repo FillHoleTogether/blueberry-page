@@ -8,13 +8,6 @@ const routes = [
     ]
   },
   {
-    path: '/dev/player',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [
-      { path: '', component: () => import('pages/dev/Player') }
-    ]
-  },
-  {
     path: '/devices',
     component: () => import('layouts/MainLayout.vue'),
     children: [
@@ -26,6 +19,13 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/device/ChannelList') }
+    ]
+  },
+  {
+    path: '/streams',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/stream/StreamList') }
     ]
   },
   // Always leave this as last one,
