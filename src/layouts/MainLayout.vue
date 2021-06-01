@@ -21,7 +21,7 @@
     <q-drawer show-if-above v-model="left" side="left" bordered>
       <q-list>
         <template v-for="(menuItem, index) in menuList">
-          <q-item :key="index" clickable v-ripple>
+          <q-item :key="index" clickable v-ripple :to="menuItem.to">
             <q-item-section avatar>
               <q-icon :name="menuItem.icon"></q-icon>
             </q-item-section>

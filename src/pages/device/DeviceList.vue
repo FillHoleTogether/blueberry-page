@@ -6,8 +6,25 @@
       :columns="columns"
       row-key="field"
       hide-bottom
-    />
-
+      :pagination="pagination"
+    >
+      <template v-slot:top-left>
+        <span class="table_top_title">设备列表</span>
+      </template>
+      <template v-slot:top-right>
+        <q-btn flat color="primary" label="" icon="refresh" @click="refreshClick"/>
+      </template>
+      <template v-slot:body-cell-operations="props">
+        <q-td :props="props">
+          <q-btn
+            color="primary"
+            size="xs"
+            label="通道列表"
+            @click="openChannelList(props.row.id)"
+          />
+        </q-td>
+      </template>
+    </q-table>
   </div>
 </template>
 
@@ -18,16 +35,18 @@ export default {
     return {
       data: [],
       columns: [
-        {field: 'id', label: '设备ID', align:'left'},
-        {field: 'type', label: '设备类型', align:'left'},
-        {field: 'name', label: '设备名称', align:'left'},
-        {field: 'manufacturer', label: '生产商', align:'left'},
-        {field: 'model', label: '型号', align:'left'},
-        {field: 'online', label: '状态', align:'left'}
+        {name: 'id', field: 'id', label: '设备ID', align: 'left'},
+        {name: 'type', field: 'type', label: '设备类型', align: 'left'},
+        {name: 'name', field: 'name', label: '设备名称', align: 'left'},
+        {name: 'manufacturer', field: 'manufacturer', label: '生产商', align: 'left'},
+        {name: 'model', field: 'model', label: '型号', align: 'left'},
+        {name: 'online', field: 'online', label: '状态', align: 'left', format: (val, row) => val === 1 ? '在线' : '离线'},
+        {name: 'createdAt', field: 'createdAt', label: '注册时间', align: 'left'},
+        {name: 'lastKeepaliveAt', field: 'lastKeepaliveAt', label: '最后心跳', align: 'left'},
+        {name: 'operations', field: 'operations', label: '操作', align: 'left'}
       ],
-      queryParams: {
-        page: 1,
-        pageSize: 15
+      pagination: {
+        rowsPerPage: 0
       }
     }
   },
@@ -37,18 +56,25 @@ export default {
   methods: {
     queryDeviceList() {
       const app = this;
-      app.$axios.get('/api/v1/device/page', {
-        params: {
-          ...app.queryParams
-        }
+      app.$axios.get('/api/v1/device/list', {
+        params: {}
       })
-      .then(res => {
-        if (res.data.success) {
-          app.data = res.data.data;
-        } else {
-
-        }
-      })
+        .then(res => {
+          if (res.data.success) {
+            app.data = res.data.data;
+          } else {
+            // todo 查询失败提示
+          }
+        })
+        .catch(e => {
+          // todo 查询失败提示
+        })
+    },
+    openChannelList(deviceId) {
+      this.$router.push({path: '/channels/' + deviceId})
+    },
+    refreshClick() {
+      this.queryDeviceList();
     }
   }
 }
