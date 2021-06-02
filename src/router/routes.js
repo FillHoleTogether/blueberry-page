@@ -15,10 +15,10 @@ const routes = [
     ]
   },
   {
-    path: '/channels/:deviceId',
+    path: '/channels/:deviceType/:deviceId',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/device/ChannelList') }
+      { path: '', component: () => import('pages/channel/ChannelList') }
     ]
   },
   {

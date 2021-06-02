@@ -27,28 +27,29 @@
             label="启动"
             v-if="props.row.state === 'PAUSED'"
             @click="resumeClick(props.row)"
+            style="margin-right: 5px"
           />
-          &nbsp;
           <q-btn
             color="orange"
             size="xs"
             label="暂停"
             v-if="props.row.state === 'NORMAL'"
             @click="pauseClick(props.row)"
+            style="margin-right: 5px"
           />
-          &nbsp;
           <q-btn
             color="brown-5"
             size="xs"
             label="编辑"
             @click="editClick(props.row)"
+            style="margin-right: 5px"
           />
-          &nbsp;
           <q-btn
             color="red"
             size="xs"
             label="删除"
             @click="removeClick(props.row)"
+            style="margin-right: 5px"
           />
         </q-td>
       </template>

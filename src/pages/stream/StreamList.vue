@@ -3,8 +3,9 @@
     <template v-for="(stream, index) in data">
       <q-card :key="index" style="width: 240px">
         <q-img
-          :src="`${baseUrl}/api/v1/media/stream/snap/${stream.snap}?st=${Date.parse(new Date())}`"
+          :src="getImgUrl(stream)"
           basic
+          :ratio="4/3"
           class="img_snap"
           @click="snapClick(stream)"
         >
@@ -29,11 +30,6 @@ export default {
       showStreamView: false,
       currentStream: false,
       refreshInterval: null
-    }
-  },
-  computed: {
-    baseUrl() {
-      return this.$baseUrl;
     }
   },
   mounted() {
@@ -73,6 +69,9 @@ export default {
     },
     streamViewClose() {
       this.showStreamView = false;
+    },
+    getImgUrl(stream) {
+      return this.$baseUrl + "/api/v1/media/stream/snap/" + stream.snap + "?st=" + Date.parse(new Date());
     }
   }
 }
