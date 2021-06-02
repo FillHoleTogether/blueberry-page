@@ -1,0 +1,145 @@
+<template>
+  <q-dialog v-model="show" persistent transition-show="scale" transition-hide="scale">
+    <q-card>
+      <q-card-section class="row items-center q-pb-none">
+        <div class="text-h6">{{ title }}</div>
+        <q-space/>
+        <q-btn icon="close" flat round dense v-close-popup @click="close"/>
+      </q-card-section>
+      <q-card-section>
+        <q-form
+          @submit="onSubmit"
+          @reset="onReset"
+          class="q-gutter-md"
+          style="width: 500px"
+        >
+          <q-input
+            filled
+            v-model="fromData_.name"
+            label="任务名称 *"
+            lazy-rules
+            :readonly="formData !== null"
+            :rules="[ val => val && val.length > 0 || '请输入任务名称']"
+          />
+          <q-input
+            filled
+            v-model="fromData_.group"
+            label="任务组 *"
+            lazy-rules
+            :rules="[ val => val && val.length > 0 || '请输入任务组']"
+          />
+          <q-input
+            v-model="fromData_.description"
+            filled
+            type="textarea"
+            label="描述 *"
+            lazy-rules
+            :rules="[ val => val && val.length > 0 || '请输入任务描述']"
+          />
+          <q-input
+            filled
+            v-model="fromData_.jobClassName"
+            label="job-class *"
+            lazy-rules
+            :rules="[ val => val && val.length > 0 || '请输入job-class']"
+          />
+          <q-input
+            filled
+            v-model="fromData_.cronExpression"
+            label="cron表达式 *"
+            lazy-rules
+            :rules="[ val => val && val.length > 0 || '请输入cron表达式']"
+          />
+          <q-input
+            filled
+            type="number"
+            v-model="fromData_.priority"
+            label="任务权重 *"
+            lazy-rules
+            :rules="[val => val !== null && val !== '' || '请输入任务权重']"
+          />
+          <q-select
+            filled
+            v-model="fromData_.misfireInstruction"
+            :options="misfireInstructions"
+            option-value="value"
+            option-label="label"
+            label="补偿模式"
+            emit-value
+            map-options
+            lazy-rules
+            :rules="[val => val !== null && val !== '' || '请选择补偿模式']"
+          />
+          <div style="text-align: right">
+            <q-btn label="提交" type="submit" color="primary"/>
+            <q-btn label="重置" type="reset" color="primary" flat class="q-ml-sm"/>
+          </div>
+        </q-form>
+      </q-card-section>
+    </q-card>
+  </q-dialog>
+</template>
+
+<script>
+
+export default {
+  name: "ScheduleForm",
+  data() {
+    return {
+      show: true,
+      loading: false,
+      misfireInstructions: [
+        {label: '不进行补偿', value: 2},
+        {label: '只补偿一次', value: 1},
+        {label: '补偿所有', value: -1}
+      ],
+      fromData_: null
+    }
+  },
+  props: {
+    formData: {
+      type: Object
+    }
+  },
+  computed: {
+    title() {
+      const formData = this.formData;
+      return formData ? '编辑定时任务' : '新建定时任务';
+    }
+  },
+  created() {
+    const formData = this.formData;
+    this.fromData_ = formData ? {...formData} : {priority: 5, misfireInstruction: 2}
+  },
+  mounted() {
+  },
+  methods: {
+    close() {
+      this.$emit('close')
+    },
+    onSubmit() {
+      const app = this;
+      const url = this.formData ? '/api/v1/quartz/schedule/update' : '/api/v1/quartz/schedule/add';
+      app.$axios.post(url, app.fromData_)
+        .then(res => {
+          if (res.data.success) {
+            app.$emit('success');
+            // todo 成功提示
+          } else {
+            // todo 错误提示
+          }
+        })
+        .catch(e => {
+          // todo 错误提示
+        })
+    },
+    onReset() {
+      this.fromData_ = {priority: 5, misfireInstruction: 2}
+    }
+  }
+}
+</script>
+
+<style scoped>
+
+</style>

@@ -28,6 +28,13 @@ const routes = [
       { path: '', component: () => import('pages/stream/StreamList') }
     ]
   },
+  {
+    path: '/schedules',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/schedule/ScheduleList') }
+    ]
+  },
   // Always leave this as last one,
   // but you can also remove it
   {

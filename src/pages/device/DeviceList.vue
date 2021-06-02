@@ -1,7 +1,6 @@
 <template>
   <div class="main_content">
     <q-table
-      title="设备列表"
       :data="data"
       :columns="columns"
       row-key="field"
@@ -9,7 +8,7 @@
       :pagination="pagination"
     >
       <template v-slot:top-left>
-        <span class="table_top_title">设备列表</span>
+        <span>设备列表</span>
       </template>
       <template v-slot:top-right>
         <q-btn flat color="primary" label="" icon="refresh" @click="refreshClick"/>

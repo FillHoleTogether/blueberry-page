@@ -60,6 +60,11 @@ export default {
         label: '视频列表',
         to: '/streams',
         separator: true
+      },{
+        icon: 'videocam',
+        label: '定时任务',
+        to: '/schedules',
+        separator: true
       }]
     }
   }

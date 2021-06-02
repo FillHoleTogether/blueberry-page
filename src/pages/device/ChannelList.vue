@@ -8,7 +8,7 @@
       :pagination="pagination"
     >
       <template v-slot:top-left>
-        <span class="table_top_title">{{ title }}</span>
+        <span>{{ title }}</span>
       </template>
       <template v-slot:top-right>
         <q-btn flat color="primary" label="< 返回" @click="backClick"/>
