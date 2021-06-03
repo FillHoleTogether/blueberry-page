@@ -61,7 +61,7 @@ export default {
         to: '/streams',
         separator: true
       },{
-        icon: 'videocam',
+        icon: 'watch_later',
         label: '定时任务',
         to: '/schedules',
         separator: true
