@@ -48,13 +48,25 @@ export default {
         .then(res => {
           if (res.data.success) {
             app.$emit('success');
-            // todo 成功提示
+            app.$q.notify({
+              type: 'positive',
+              position: 'top',
+              message: '删除成功'
+            });
           } else {
-            // todo 错误提示
+            app.$q.notify({
+              type: 'warning',
+              position: 'top',
+              message: '删除失败: ' + res.data.message
+            });
           }
         })
         .catch(e => {
-          // todo 错误提示
+          app.$q.notify({
+            type: 'negative',
+            position: 'top',
+            message: '删除异常. ' + e
+          });
         })
     }
   }

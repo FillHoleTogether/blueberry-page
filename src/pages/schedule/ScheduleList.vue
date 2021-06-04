@@ -123,11 +123,19 @@ export default {
           if (res.data.success) {
             app.data = res.data.data;
           } else {
-            // todo 查询失败提示
+            app.$q.notify({
+              type: 'warning',
+              position: 'top',
+              message: '定时任务列表加载失败: ' + res.data.message
+            });
           }
         })
         .catch(e => {
-          // todo 查询失败提示
+          app.$q.notify({
+            type: 'negative',
+            position: 'top',
+            message: '定时任务列表加载异常. ' + e
+          });
         })
     },
     refreshClick() {

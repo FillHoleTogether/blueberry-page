@@ -56,11 +56,19 @@ export default {
             app.flvUrl = res.data.data.flv;
           } else {
             app.loading = false;
-            // todo 查询失败提示
+            app.$q.notify({
+              type: 'warning',
+              position: 'top',
+              message: '视频点播失败: ' + res.data.message
+            });
           }
         })
         .catch(e => {
-          // todo 查询失败提示
+          app.$q.notify({
+            type: 'negative',
+            position: 'top',
+            message: '视频点播异常. ' + e
+          });
         })
     },
     close() {

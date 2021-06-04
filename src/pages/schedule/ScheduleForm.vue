@@ -119,18 +119,30 @@ export default {
     },
     onSubmit() {
       const app = this;
-      const url = this.formData ? '/api/v1/quartz/schedule/update' : '/api/v1/quartz/schedule/add';
+      const url = app.formData ? '/api/v1/quartz/schedule/update' : '/api/v1/quartz/schedule/add';
       app.$axios.post(url, app.fromData_)
         .then(res => {
           if (res.data.success) {
             app.$emit('success');
-            // todo 成功提示
+            app.$q.notify({
+              type: 'positive',
+              position: 'top',
+              message: app.formData ? '更新成功' : '添加成功'
+            });
           } else {
-            // todo 错误提示
+            app.$q.notify({
+              type: 'warning',
+              position: 'top',
+              message: (app.formData ? '更新失败' : '添加失败') + ': ' + res.data.message
+            });
           }
         })
         .catch(e => {
-          // todo 错误提示
+          app.$q.notify({
+            type: 'negative',
+            position: 'top',
+            message: (app.formData ? '更新异常' : '添加异常') + '. ' + e
+          });
         })
     },
     onReset() {
