@@ -13,7 +13,7 @@ export default {
   },
   computed: {
     iframeUrl() {
-      return this.$baseUrl + '/swagger-ui/index.html';
+      return this.$baseUrl + '/doc.html';
     }
   }
 }
