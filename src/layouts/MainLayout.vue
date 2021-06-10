@@ -3,12 +3,12 @@
 
     <q-header elevated class="bg-primary text-white" height-hint="98">
       <q-toolbar>
-        <q-btn dense flat round icon="menu" @click="left = !left" />
+        <q-btn dense flat round icon="menu" @click="left = !left"/>
 
         <q-toolbar-title>
-<!--          <q-avatar>-->
-<!--            <img src="/logo.jpg">-->
-<!--          </q-avatar>-->
+          <!--          <q-avatar>-->
+          <!--            <img src="/logo.jpg">-->
+          <!--          </q-avatar>-->
           Blueberry
         </q-toolbar-title>
       </q-toolbar>
@@ -20,22 +20,12 @@
 
     <q-drawer show-if-above v-model="left" side="left" bordered>
       <q-list>
-        <template v-for="(menuItem, index) in menuList">
-          <q-item :key="index" clickable v-ripple :to="menuItem.to">
-            <q-item-section avatar>
-              <q-icon :name="menuItem.icon"></q-icon>
-            </q-item-section>
-            <q-item-section>
-              {{ menuItem.label }}
-            </q-item-section>
-          </q-item>
-          <q-separator :key="'sep' + index" v-if="menuItem.separator"></q-separator>
-        </template>
+        <menu-tree :data="menuData"/>
       </q-list>
     </q-drawer>
 
-    <q-page-container>
-      <router-view />
+    <q-page-container style="width: 100%;height: 100%;position: fixed">
+      <router-view/>
     </q-page-container>
 
   </q-layout>
@@ -44,27 +34,53 @@
 
 <script>
 
+import MenuTree from "layouts/MenuTree";
+
 export default {
   name: 'MainLayout',
-  components: {},
+  components: {MenuTree},
   data() {
     return {
       left: false,
-      menuList: [{
-        icon: 'list',
-        label: '设备列表',
-        to: '/devices',
-        separator: true
-      },{
-        icon: 'videocam',
-        label: '视频列表',
-        to: '/streams',
-        separator: true
-      },{
-        icon: 'watch_later',
-        label: '定时任务',
-        to: '/schedules',
-        separator: true
+      menuData: [{
+          name: '设备列表',
+          icon: 'list',
+          group: '/device',
+          groupName: 'first',
+          to: '/device/list'
+        },{
+          name: '视频列表',
+          icon: 'videocam',
+          group: '/stream',
+          groupName: 'first',
+          to: '/stream/list'
+        },{
+          name: '定时任务',
+          icon: 'watch_later',
+          group: '/schedule',
+          groupName: 'first',
+          to: '/schedule/list'
+        }, {
+          name: '视频质量检测',
+          icon: 'view_in_ar',
+          group: '/videoQualityDetect',
+          groupName: 'first',
+          children: [{
+              name: '算法列表',
+              group: '/videoQualityDetect',
+              to: '/videoQualityDetect/strategy/list'
+            },
+            {
+              name: '检测记录',
+              group: '/videoQualityDetect',
+              to: '/videoQualityDetect/record/list'
+            }]
+        },{
+        name: 'API 接口文档',
+        icon: 'description',
+        group: '/api',
+        groupName: 'first',
+        to: '/api/list'
       }]
     }
   }

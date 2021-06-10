@@ -8,7 +8,7 @@ const routes = [
     ]
   },
   {
-    path: '/devices',
+    path: '/device/list',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/device/DeviceList') }
@@ -22,17 +22,24 @@ const routes = [
     ]
   },
   {
-    path: '/streams',
+    path: '/stream/list',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/stream/StreamList') }
     ]
   },
   {
-    path: '/schedules',
+    path: '/schedule/list',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/schedule/ScheduleList') }
+    ]
+  },
+  {
+    path: '/api/list',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/api/ApiDocumentView') }
     ]
   },
   // Always leave this as last one,
