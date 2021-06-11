@@ -116,7 +116,7 @@ export default {
   methods: {
     queryList() {
       const app = this;
-      app.$axios.get('/api/v1/quartz/schedule/list', {
+      app.$axios.get('/api/v1/quartz/job/list', {
         params: {}
       })
         .then(res => {

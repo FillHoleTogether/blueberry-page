@@ -31,7 +31,7 @@
             style="margin-right: 5px"
           />
           <q-btn
-            v-if="props.row.parental === 0 && props.row.online === 1"
+            v-if="props.row.parental === 0 && props.row.status === 'ON'"
             color="secondary"
             size="xs"
             label="预览"
@@ -106,18 +106,11 @@ export default {
           {name: 'model', field: 'model', label: '型号', align: 'left'},
           {name: 'rtsp', field: 'rtsp', label: 'rtsp', align: 'left'},
           {
-            name: 'online',
-            field: 'online',
-            label: '状态',
-            align: 'left',
-            format: (val, row) => val === 1 ? '在线' : '离线'
-          },
-          {
             name: 'status',
             field: 'status',
-            label: '异常',
+            label: '状态',
             align: 'left',
-            format: (val, row) => val === 'ON' ? '否' : '是'
+            format: (val, row) => val === 'ON' ? '在线' : '离线'
           },
           {name: 'operations', field: 'operations', label: '操作', align: 'left'}
         ]
@@ -136,18 +129,11 @@ export default {
             format: (val, row) => val === 1 ? '是' : '否'
           },
           {
-            name: 'online',
-            field: 'online',
-            label: '状态',
-            align: 'left',
-            format: (val, row) => val === 1 ? '在线' : '离线'
-          },
-          {
             name: 'status',
             field: 'status',
-            label: '异常',
+            label: '状态',
             align: 'left',
-            format: (val, row) => val === 'ON' ? '否' : '是'
+            format: (val, row) => val === 'ON' ? '在线' : '离线'
           },
           {name: 'operations', field: 'operations', label: '操作', align: 'left'}
         ]
@@ -196,7 +182,7 @@ export default {
         })
     },
     backClick() {
-      this.$router.push({path: '/devices'})
+      this.$router.push({path: '/device/list'})
     },
     refreshClick() {
       this.queryList();

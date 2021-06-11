@@ -51,7 +51,7 @@ export default {
       const app = this;
       const url = '/api/v1/channel/delete';
       app.$axios.post(url, {
-        channelId: app.data.id,
+        id: app.data.id,
         deviceId: app.deviceId
       })
         .then(res => {

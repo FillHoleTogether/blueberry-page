@@ -44,7 +44,7 @@ export default {
     queryPlayUrl() {
       const app = this;
       app.loading = true;
-      app.$axios.get('/api/v1/media/stream/play', {
+      app.$axios.get('/api/v1/video-stream/play', {
         params: {
           deviceId: app.deviceId,
           channelId: app.channelId

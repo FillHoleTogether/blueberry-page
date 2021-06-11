@@ -119,7 +119,7 @@ export default {
     },
     onSubmit() {
       const app = this;
-      const url = app.formData ? '/api/v1/quartz/schedule/update' : '/api/v1/quartz/schedule/add';
+      const url = app.formData ? '/api/v1/quartz/job/update' : '/api/v1/quartz/job/add';
       app.$axios.post(url, app.fromData_)
         .then(res => {
           if (res.data.success) {

@@ -41,7 +41,7 @@ export default {
     },
     submit() {
       const app = this;
-      const url = '/api/v1/quartz/schedule/resume';
+      const url = '/api/v1/quartz/job/resume';
       app.$axios.post(url, {
         name: app.data.name,
         group: app.data.group

@@ -49,7 +49,7 @@ export default {
   methods: {
     queryStreamList() {
       const app = this;
-      app.$axios.get('/api/v1/media/stream/list', {
+      app.$axios.get('/api/v1/video-stream/list', {
         params: {}
       })
         .then(res => {
@@ -79,7 +79,7 @@ export default {
       this.showStreamView = false;
     },
     getImgUrl(stream) {
-      return this.$baseUrl + "/api/v1/media/stream/snap/" + stream.snap + "?st=" + Date.parse(new Date());
+      return this.$baseUrl + "/api/v1/video-stream/snap/" + stream.snap + "?st=" + Date.parse(new Date());
     }
   }
 }

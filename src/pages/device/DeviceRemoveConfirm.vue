@@ -43,7 +43,7 @@ export default {
       const app = this;
       const url = '/api/v1/device/delete';
       app.$axios.post(url, {
-        deviceId: app.data.id
+        id: app.data.id
       })
         .then(res => {
           if (res.data.success) {
