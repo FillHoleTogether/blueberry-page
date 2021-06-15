@@ -15,7 +15,7 @@
         >
           <q-input
             filled
-            v-model="fromData_.id"
+            v-model="formData_.id"
             label="通道ID *"
             lazy-rules
             :readonly="formData !== null"
@@ -23,14 +23,14 @@
           />
           <q-input
             filled
-            v-model="fromData_.name"
+            v-model="formData_.name"
             label="通道名称 *"
             lazy-rules
             :rules="[ val => val && val.length > 0 || '请输入通道名称']"
           />
           <q-input
             filled
-            v-model="fromData_.rtsp"
+            v-model="formData_.rtsp"
             label="rtsp *"
             v-if="deviceType === 'RTSP'"
             lazy-rules
@@ -53,7 +53,7 @@ export default {
   data() {
     return {
       show: true,
-      fromData_: null
+      formData_: null
     }
   },
   props: {
@@ -75,7 +75,7 @@ export default {
   },
   created() {
     const formData = this.formData;
-    this.fromData_ = formData ? {...formData} : {}
+    this.formData_ = formData ? {...formData} : {}
   },
   mounted() {
   },
@@ -87,7 +87,7 @@ export default {
       const app = this;
       const url = app.formData ? '/api/v1/channel/update' : '/api/v1/channel/add';
       app.$axios.post(url, {
-        ...app.fromData_,
+        ...app.formData_,
         deviceId: app.deviceId
       })
         .then(res => {
@@ -115,7 +115,7 @@ export default {
         })
     },
     onReset() {
-      this.fromData_ = {}
+      this.formData_ = {}
     }
   }
 }

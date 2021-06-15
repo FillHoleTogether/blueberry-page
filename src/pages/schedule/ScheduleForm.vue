@@ -15,7 +15,7 @@
         >
           <q-input
             filled
-            v-model="fromData_.name"
+            v-model="formData_.name"
             label="任务名称 *"
             lazy-rules
             :readonly="formData !== null"
@@ -23,13 +23,13 @@
           />
           <q-input
             filled
-            v-model="fromData_.group"
+            v-model="formData_.group"
             label="任务组 *"
             lazy-rules
             :rules="[ val => val && val.length > 0 || '请输入任务组']"
           />
           <q-input
-            v-model="fromData_.description"
+            v-model="formData_.description"
             filled
             type="textarea"
             label="描述 *"
@@ -38,14 +38,14 @@
           />
           <q-input
             filled
-            v-model="fromData_.jobClassName"
+            v-model="formData_.jobClassName"
             label="job-class *"
             lazy-rules
             :rules="[ val => val && val.length > 0 || '请输入job-class']"
           />
           <q-input
             filled
-            v-model="fromData_.cronExpression"
+            v-model="formData_.cronExpression"
             label="cron表达式 *"
             lazy-rules
             :rules="[ val => val && val.length > 0 || '请输入cron表达式']"
@@ -53,14 +53,14 @@
           <q-input
             filled
             type="number"
-            v-model="fromData_.priority"
+            v-model="formData_.priority"
             label="任务权重 *"
             lazy-rules
             :rules="[val => val !== null && val !== '' || '请输入任务权重']"
           />
           <q-select
             filled
-            v-model="fromData_.misfireInstruction"
+            v-model="formData_.misfireInstruction"
             :options="misfireInstructions"
             option-value="value"
             option-label="label"
@@ -93,7 +93,7 @@ export default {
         {label: '只补偿一次', value: 1},
         {label: '补偿所有', value: -1}
       ],
-      fromData_: null
+      formData_: null
     }
   },
   props: {
@@ -109,7 +109,7 @@ export default {
   },
   created() {
     const formData = this.formData;
-    this.fromData_ = formData ? {...formData} : {priority: 5, misfireInstruction: 2}
+    this.formData_ = formData ? {...formData} : {priority: 5, misfireInstruction: 2}
   },
   mounted() {
   },
@@ -120,7 +120,7 @@ export default {
     onSubmit() {
       const app = this;
       const url = app.formData ? '/api/v1/quartz/job/update' : '/api/v1/quartz/job/add';
-      app.$axios.post(url, app.fromData_)
+      app.$axios.post(url, app.formData_)
         .then(res => {
           if (res.data.success) {
             app.$emit('success');
@@ -146,7 +146,7 @@ export default {
         })
     },
     onReset() {
-      this.fromData_ = {priority: 5, misfireInstruction: 2}
+      this.formData_ = {priority: 5, misfireInstruction: 2}
     }
   }
 }

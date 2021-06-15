@@ -15,7 +15,7 @@
         >
           <q-input
             filled
-            v-model="fromData_.id"
+            v-model="formData_.id"
             label="设备ID *"
             lazy-rules
             :readonly="formData !== null"
@@ -23,7 +23,7 @@
           />
           <q-select
             filled
-            v-model="fromData_.type"
+            v-model="formData_.type"
             :options="types"
             option-value="value"
             option-label="label"
@@ -35,14 +35,14 @@
           />
           <q-input
             filled
-            v-model="fromData_.name"
+            v-model="formData_.name"
             label="设备名称 *"
             lazy-rules
             :rules="[ val => val && val.length > 0 || '请输入设备名称']"
           />
           <q-input
             filled
-            v-model="fromData_.remoteIp"
+            v-model="formData_.remoteIp"
             label="remoteIp *"
             lazy-rules
             :rules="[ val => val && val.length > 0 || '请输入remoteIp']"
@@ -50,24 +50,24 @@
           <q-input
             filled
             type="number"
-            v-model="fromData_.remotePort"
+            v-model="formData_.remotePort"
             label="remotePort *"
             lazy-rules
             :rules="[ val => val !== null && val !== '' || '请输入remotePort']"
           />
           <q-input
             filled
-            v-model="fromData_.manufacturer"
+            v-model="formData_.manufacturer"
             label="生产商"
           />
           <q-input
             filled
-            v-model="fromData_.model"
+            v-model="formData_.model"
             label="型号"
           />
           <q-input
             filled
-            v-model="fromData_.firmware"
+            v-model="formData_.firmware"
             label="固件版本"
           />
           <div style="text-align: right">
@@ -91,7 +91,7 @@ export default {
       types: [
         {label: 'RTSP', value: 'RTSP'}
       ],
-      fromData_: null
+      formData_: null
     }
   },
   props: {
@@ -107,7 +107,7 @@ export default {
   },
   created() {
     const formData = this.formData;
-    this.fromData_ = formData ? {...formData} : {}
+    this.formData_ = formData ? {...formData} : {}
   },
   mounted() {
   },
@@ -118,7 +118,7 @@ export default {
     onSubmit() {
       const app = this;
       const url = this.formData ? '/api/v1/device/update' : '/api/v1/device/add';
-      app.$axios.post(url, app.fromData_)
+      app.$axios.post(url, app.formData_)
         .then(res => {
           if (res.data.success) {
             app.$emit('success');
@@ -144,7 +144,7 @@ export default {
         })
     },
     onReset() {
-      this.fromData_ = {}
+      this.formData_ = {}
     }
   }
 }
