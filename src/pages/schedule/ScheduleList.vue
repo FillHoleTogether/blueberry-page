@@ -73,6 +73,7 @@ export default {
     return {
       data: [],
       columns: [
+        {name: 'index', field: 'index', label: '#', align: 'left'},
         {name: 'name', field: 'name', label: '任务名称', align: 'left'},
         {name: 'group', field: 'group', label: '任务组', align: 'left'},
         {name: 'description', field: 'description', label: '任务描述', align: 'left'},
@@ -122,6 +123,9 @@ export default {
         .then(res => {
           if (res.data.success) {
             app.data = res.data.data;
+            for (let i = 0; i < app.data.length; i++) {
+              app.data[i].index = i + 1;
+            }
           } else {
             app.$q.notify({
               type: 'warning',

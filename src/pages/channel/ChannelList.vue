@@ -100,6 +100,7 @@ export default {
       const deviceType = this.deviceType;
       if (deviceType === 'RTSP') {
         return [
+          {name: 'index', field: 'index', label: '#', align: 'left'},
           {name: 'id', field: 'id', label: '通道ID', align: 'left'},
           {name: 'name', field: 'name', label: '名称', align: 'left'},
           {name: 'manufacturer', field: 'manufacturer', label: '生产商', align: 'left'},
@@ -116,6 +117,7 @@ export default {
         ]
       } else {
         return [
+          {name: 'index', field: 'index', label: '#', align: 'left'},
           {name: 'id', field: 'id', label: '通道ID', align: 'left'},
           {name: 'name', field: 'name', label: '名称', align: 'left'},
           {name: 'manufacturer', field: 'manufacturer', label: '生产商', align: 'left'},
@@ -165,6 +167,9 @@ export default {
         .then(res => {
           if (res.data.success) {
             app.data = res.data.data;
+            for (let i = 0; i < app.data.length; i++) {
+              app.data[i].index = i + 1;
+            }
           } else {
             app.$q.notify({
               type: 'warning',

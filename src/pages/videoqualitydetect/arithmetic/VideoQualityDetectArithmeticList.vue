@@ -82,6 +82,7 @@ export default {
     return {
       data: [],
       columns: [
+        {name: 'index', field: 'index', label: '#', align: 'left'},
         {name: 'code', field: 'code', label: '编码', align: 'left'},
         {name: 'name', field: 'name', label: '名称', align: 'left'},
         {name: 'priority', field: 'priority', label: '优先级', align: 'left'},
@@ -127,6 +128,9 @@ export default {
         .then(res => {
           if (res.data.success) {
             app.data = res.data.data;
+            for (let i = 0; i < app.data.length; i++) {
+              app.data[i].index = i + 1;
+            }
           } else {
             app.$q.notify({
               type: 'warning',

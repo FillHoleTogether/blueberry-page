@@ -25,7 +25,8 @@
         </q-td>
       </template>
     </q-table>
-    <video-quality-detect-record-snapshot-viewer v-if="showSnapshotView" :record="currentRecord" @close="onSnapshotViewClose"></video-quality-detect-record-snapshot-viewer>
+    <video-quality-detect-record-snapshot-viewer v-if="showSnapshotView" :record="currentRecord"
+                                                 @close="onSnapshotViewClose"></video-quality-detect-record-snapshot-viewer>
   </div>
 </template>
 
@@ -33,6 +34,7 @@
 
 import VideoQualityDetectRecordSnapshotViewer
   from "pages/videoqualitydetect/record/VideoQualityDetectRecordSnapshotViewer";
+
 export default {
   name: "VideoQualityDetectRecordList",
   components: {VideoQualityDetectRecordSnapshotViewer},
@@ -40,6 +42,7 @@ export default {
     return {
       data: [],
       columns: [
+        {name: 'index', field: 'index', label: '#', align: 'left'},
         {name: 'deviceId', field: 'deviceId', label: '设备ID', align: 'left'},
         {name: 'channelId', field: 'channelId', label: '通道ID', align: 'left'},
         {
@@ -93,6 +96,9 @@ export default {
         .then(res => {
           if (res.data.success) {
             app.data = res.data.data;
+            for (let i = 0; i < app.data.length; i++) {
+              app.data[i].index = i + 1;
+            }
           } else {
             app.$q.notify({
               type: 'warning',
