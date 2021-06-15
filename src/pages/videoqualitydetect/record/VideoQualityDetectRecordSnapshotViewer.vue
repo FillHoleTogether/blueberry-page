@@ -15,6 +15,9 @@
         </q-img>
       </q-card-section>
       <q-card-section class="row items-center q-pb-none">
+        <pre style="overflow-x: auto">{{JSON.stringify(JSON.parse(record.detail),null,2)}}</pre>
+      </q-card-section>
+      <q-card-section class="row items-center q-pb-none">
       </q-card-section>
     </q-card>
   </q-dialog>

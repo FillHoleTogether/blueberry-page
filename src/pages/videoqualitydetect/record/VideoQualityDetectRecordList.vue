@@ -5,6 +5,8 @@
       :columns="columns"
       row-key="field"
       hide-bottom
+      style="height: 100%"
+      virtual-scroll
       :pagination="pagination"
     >
       <template v-slot:top-left>
