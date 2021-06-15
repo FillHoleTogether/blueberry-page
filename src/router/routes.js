@@ -47,6 +47,13 @@ const routes = [
     ]
   },
   {
+    path: '/videoQualityDetect/record/list',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/videoqualitydetect/record/VideoQualityDetectRecordList') }
+    ]
+  },
+  {
     path: '/api/list',
     component: () => import('layouts/MainLayout.vue'),
     children: [

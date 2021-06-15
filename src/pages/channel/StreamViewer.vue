@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-model="show" persistent transition-show="scale" transition-hide="scale">
-    <q-card>
+    <q-card style="min-width: 800px">
       <q-card-section class="row items-center q-pb-none">
         <div class="text-h6">预览</div>
         <q-space/>
