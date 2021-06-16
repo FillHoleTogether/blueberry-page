@@ -20,7 +20,7 @@
           <q-btn
             color="primary"
             size="xs"
-            label="查看快照"
+            label="查看详情"
             style="margin-right: 5px"
             @click="onSnapshotClick(props.row)"
           />
@@ -45,6 +45,7 @@ export default {
       data: [],
       columns: [
         {name: 'index', field: 'index', label: '#', align: 'left'},
+        {name: 'arithmeticName', field: 'arithmeticName', label: '算法名称', align: 'left'},
         {name: 'deviceId', field: 'deviceId', label: '设备ID', align: 'left'},
         {name: 'channelId', field: 'channelId', label: '通道ID', align: 'left'},
         {
@@ -61,8 +62,6 @@ export default {
           align: 'left',
           format: (val, row) => val === 1 ? '是' : '否'
         },
-        {name: 'qualityError', field: 'qualityError', label: '质量异常', align: 'left', format: this.renderQualityError},
-        // {name: 'createdAt', field: 'createdAt', label: '注册时间', align: 'left'},
         {name: 'createdAt', field: 'createdAt', label: '创建时间', align: 'left'},
         {name: 'operations', field: 'operations', label: '操作', align: 'left'}
       ],
