@@ -7,12 +7,24 @@
         <q-btn icon="close" flat round dense v-close-popup @click="close"/>
       </q-card-section>
       <q-card-section class="row items-center q-pb-none">
-        <q-img
-          :src="getImgUrl()"
-          basic
-          :ratio="4/3"
-        >
-        </q-img>
+        <div class="row" v-if="record.imagePath.indexOf(',') > -1" style="width: 100%;height: 100%">
+          <div class="col" v-bind:key="index" v-for="(url, index) in getImgUrls()">
+            <q-img
+              :src="url"
+              basic
+              :ratio="4/3"
+            >
+            </q-img>
+          </div>
+        </div>
+        <div class="row" v-else  style="width: 100%;height: 100%">
+          <q-img
+            :src="getImgUrl()"
+            basic
+            :ratio="4/3"
+          >
+          </q-img>
+        </div>
       </q-card-section>
       <q-card-section class="row items-center q-pb-none">
         <pre style="overflow-x: auto">{{JSON.stringify(JSON.parse(record.detail),null,2)}}</pre>
@@ -46,6 +58,9 @@ export default {
     },
     getImgUrl() {
       return this.$baseUrl + "/api/v1/video-quality-detect/arithmetic/record/snap?id=" + this.record.id + "&st=" + Date.parse(new Date());
+    },
+    getImgUrls() {
+      return this.record.imagePath.split(",").map(path => this.$baseUrl + "/api/v1/video-quality-detect/arithmetic/record/snapByPath?path=" + path + "&st=" + Date.parse(new Date()));
     }
   }
 }
