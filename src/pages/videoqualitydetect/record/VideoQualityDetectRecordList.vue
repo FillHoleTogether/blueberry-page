@@ -189,7 +189,8 @@ export default {
       this.searchParams = {
         arithmeticName: null,
         deviceId: null,
-        channelId: null
+        channelId: null,
+        hasQualityError: null
       };
       this.queryList();
     },
