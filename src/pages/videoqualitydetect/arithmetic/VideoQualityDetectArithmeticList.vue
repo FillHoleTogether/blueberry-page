@@ -9,7 +9,7 @@
       <template v-slot:top>
         <div>
           <q-btn
-            color="primary"
+            color="teal"
             size="sm"
             label="新建"
             style="margin-right: 5px"
