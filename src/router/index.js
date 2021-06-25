@@ -1,9 +1,12 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 
-import routes from './routes'
+import routes from './routes';
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
+Vue.use(ElementUI);
 
 /*
  * If not building with SSR mode, you can

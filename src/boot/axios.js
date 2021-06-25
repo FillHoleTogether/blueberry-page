@@ -2,7 +2,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import qs from 'qs'
 
-const baseUrl = "http://192.168.3.81:10001";
+const baseUrl = "http://192.168.3.65:10001";
 
 const axiosConfig = {
   withCredentials: true,

@@ -4,16 +4,58 @@
       :data="data"
       :columns="columns"
       row-key="field"
-      hide-bottom
       style="height: 100%"
       virtual-scroll
-      :pagination="pagination"
+      :pagination="{ rowsPerPage: 0 }"
     >
-      <template v-slot:top-left>
-        <span>检测记录列表</span>
-      </template>
-      <template v-slot:top-right>
-        <q-btn flat color="primary" label="" icon="refresh" @click="refreshClick"/>
+      <template v-slot:top>
+        <div>
+          <el-input
+            size="mini"
+            placeholder="算法名称"
+            clearable
+            style="width: 100px; margin-right: 5px"
+            v-model="searchParams.arithmeticName">
+          </el-input>
+          <el-input
+            size="mini"
+            placeholder="设备ID"
+            clearable
+            style="width: 150px; margin-right: 5px"
+            v-model="searchParams.deviceId">
+          </el-input>
+          <el-input
+            size="mini"
+            placeholder="通道ID"
+            clearable
+            style="width: 150px; margin-right: 5px"
+            v-model="searchParams.channelId">
+          </el-input>
+          <el-select
+            v-model="searchParams.hasQualityError"
+            placeholder="是否质量异常"
+            clearable
+            size="mini"
+            style="width: 150px; margin-right: 5px"
+          >
+            <el-option label="是" :value="1"/>
+            <el-option label="否" :value="0"/>
+          </el-select>
+          <q-btn
+            color="primary"
+            size="sm"
+            label="查询"
+            style="margin-right: 5px"
+            @click="refreshClick"
+          />
+          <q-btn
+            color="primary"
+            size="sm"
+            outline
+            label="重置"
+            @click="resetClick"
+          />
+        </div>
       </template>
       <template v-slot:body-cell-operations="props">
         <q-td :props="props">
@@ -25,6 +67,17 @@
             @click="onSnapshotClick(props.row)"
           />
         </q-td>
+      </template>
+      <template v-slot:bottom>
+        <el-pagination
+          @size-change="onSizeChange"
+          @current-change="onPageChange"
+          :current-page="pagination.page"
+          :page-sizes="pagination.pageSizes"
+          :page-size="pagination.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="pagination.total">
+        </el-pagination>
       </template>
     </q-table>
     <video-quality-detect-record-snapshot-viewer v-if="showSnapshotView" :record="currentRecord"
@@ -65,13 +118,21 @@ export default {
         {name: 'createdAt', field: 'createdAt', label: '创建时间', align: 'left'},
         {name: 'operations', field: 'operations', label: '操作', align: 'left'}
       ],
-      pagination: {
-        rowsPerPage: 0
-      },
       refreshInterval: null,
       currentRecord: null,
       showSnapshotView: false,
-
+      pagination: {
+        page: 1,
+        pageSize: 15,
+        pageSizes: [10, 15, 20, 30, 40, 50],
+        total: 0
+      },
+      searchParams: {
+        arithmeticName: null,
+        deviceId: null,
+        channelId: null,
+        hasQualityError: null
+      }
     }
   },
   mounted() {
@@ -91,12 +152,17 @@ export default {
   methods: {
     queryList() {
       const app = this;
-      app.$axios.get('/api/v1/video-quality-detect/arithmetic/record/list', {
-        params: {}
+      app.$axios.get('/api/v1/video-quality-detect/arithmetic/record/page', {
+        params: {
+          page: app.pagination.page,
+          pageSize: app.pagination.pageSize,
+          ...app.searchParams
+        }
       })
         .then(res => {
           if (res.data.success) {
-            app.data = res.data.data;
+            app.pagination.total = res.data.data.total;
+            app.data = res.data.data.data;
             for (let i = 0; i < app.data.length; i++) {
               app.data[i].index = i + 1;
             }
@@ -119,40 +185,13 @@ export default {
     refreshClick() {
       this.queryList();
     },
-    renderQualityError(val, row) {
-      let res = '';
-      switch (val) {
-        case 'ERROR_NOISE':
-          res = '噪声异常';
-          break;
-        case 'ERROR_STRIPE':
-          res = '条纹异常';
-          break;
-        case 'ERROR_SHARPNESS':
-          res = '清晰度异常';
-          break;
-        case 'ERROR_BRIGHTNESS_OVER_LIGHT':
-          res = '亮度异常[过亮]';
-          break;
-        case 'ERROR_BRIGHTNESS_OVER_DARK':
-          res = '亮度异常[过暗]';
-          break;
-        case 'ERROR_COLOR_CAST_OVER_BLUE':
-          res = '偏色异常[蓝]';
-          break;
-        case 'ERROR_COLOR_CAST_OVER_RED':
-          res = '偏色异常[红]';
-          break;
-        case 'ERROR_COLOR_CAST_OVER_GREEN':
-          res = '偏色异常[绿]';
-          break;
-        case 'ERROR_COLOR_CAST_OVER_YELLOW':
-          res = '偏色异常[黄]';
-          break;
-        default:
-          break;
-      }
-      return res;
+    resetClick() {
+      this.searchParams = {
+        arithmeticName: null,
+        deviceId: null,
+        channelId: null
+      };
+      this.queryList();
     },
     onSnapshotClick(data) {
       this.currentRecord = data;
@@ -161,6 +200,14 @@ export default {
     onSnapshotViewClose() {
       this.showSnapshotView = false;
       this.currentRecord = null;
+    },
+    onPageChange(val) {
+      this.pagination.page = val;
+      this.queryList();
+    },
+    onSizeChange(val) {
+      this.pagination.pageSize = val;
+      this.queryList();
     }
   }
 }
