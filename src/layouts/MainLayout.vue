@@ -74,6 +74,11 @@ export default {
               name: '检测记录',
               group: '/videoQualityDetect',
               to: '/videoQualityDetect/record/list'
+            },
+            {
+              name: '手动检测',
+              group: '/videoQualityDetect',
+              to: '/videoQualityDetect/manual'
             }]
         },{
         name: 'API 接口文档',
