@@ -4,22 +4,57 @@
       :data="data"
       :columns="columns"
       row-key="field"
-      hide-bottom
-      :pagination="pagination"
+      :pagination="{ rowsPerPage: 0 }"
     >
-      <template v-slot:top-left>
-        <span>{{ title }}</span>
-      </template>
-      <template v-slot:top-right>
-        <q-btn
-          color="primary"
-          size="xs"
-          label="新建"
-          v-if="deviceType !== 'GB'"
-          @click="addClick"
-        />
-        <q-btn flat color="primary" label="" icon="refresh" @click="refreshClick"/>
-        <q-btn flat color="primary" label="< 返回" @click="backClick"/>
+      <template v-slot:top>
+        <div>
+          <q-btn
+            color="teal"
+            size="sm"
+            label="新建"
+            style="margin-right: 5px"
+            v-if="deviceType !== 'GB'"
+            @click="addClick"
+          />
+        </div>
+        <div>
+          <el-input
+            size="mini"
+            placeholder="通道ID"
+            clearable
+            style="width: 100px; margin-right: 5px"
+            v-model="searchParams.id">
+          </el-input>
+          <el-input
+            size="mini"
+            placeholder="通道名称"
+            clearable
+            style="width: 100px; margin-right: 5px"
+            v-model="searchParams.name">
+          </el-input>
+          <q-btn
+            color="primary"
+            size="sm"
+            label="查询"
+            style="margin-right: 5px"
+            @click="refreshClick"
+          />
+          <q-btn
+            color="primary"
+            size="sm"
+            outline
+            label="重置"
+            style="margin-right: 5px"
+            @click="resetClick"
+          />
+          <q-btn
+            color="primary"
+            size="sm"
+            outline
+            label="返回设备列表"
+            @click="backClick"
+          />
+        </div>
       </template>
       <template v-slot:body-cell-operations="props">
         <q-td :props="props">
@@ -53,6 +88,17 @@
           />
         </q-td>
       </template>
+      <template v-slot:bottom>
+        <el-pagination
+          @size-change="onSizeChange"
+          @current-change="onPageChange"
+          :current-page="pagination.page"
+          :page-sizes="pagination.pageSizes"
+          :page-size="pagination.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="pagination.total">
+        </el-pagination>
+      </template>
     </q-table>
     <stream-view v-if="showStreamView" :device-id="deviceId" :channel-id="currentChannelId"
                  @close="streamViewClose"></stream-view>
@@ -73,16 +119,23 @@ export default {
   data() {
     return {
       data: [],
-      pagination: {
-        rowsPerPage: 0
-      },
       currentChannelId: null,
       showStreamView: false,
       refreshInterval: null,
       showForm: false,
       formData: null,
       showConfirm: false,
-      removeData: null
+      removeData: null,
+      pagination: {
+        page: 1,
+        pageSize: 15,
+        pageSizes: [10, 15, 20, 30, 40, 50],
+        total: 0
+      },
+      searchParams: {
+        id: null,
+        name: null
+      }
     }
   },
   computed: {
@@ -159,14 +212,18 @@ export default {
   methods: {
     queryList() {
       const app = this;
-      app.$axios.get('/api/v1/channel/list', {
+      app.$axios.get('/api/v1/channel/page', {
         params: {
-          deviceId: app.deviceId
+          deviceId: app.deviceId,
+          page: app.pagination.page,
+          pageSize: app.pagination.pageSize,
+          ...app.searchParams
         }
       })
         .then(res => {
           if (res.data.success) {
-            app.data = res.data.data;
+            app.pagination.total = res.data.data.total;
+            app.data = res.data.data.data;
             for (let i = 0; i < app.data.length; i++) {
               app.data[i].index = i + 1;
             }
@@ -190,6 +247,13 @@ export default {
       this.$router.push({path: '/device/list'})
     },
     refreshClick() {
+      this.queryList();
+    },
+    resetClick() {
+      this.searchParams = {
+        id: null,
+        name: null
+      };
       this.queryList();
     },
     playClick(channelId) {
@@ -225,6 +289,14 @@ export default {
     },
     removeSuccess() {
       this.removeClose();
+      this.queryList();
+    },
+    onPageChange(val) {
+      this.pagination.page = val;
+      this.queryList();
+    },
+    onSizeChange(val) {
+      this.pagination.pageSize = val;
       this.queryList();
     }
   }
