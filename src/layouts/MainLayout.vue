@@ -42,30 +42,35 @@ export default {
   data() {
     return {
       left: false,
-      menuData: [{
+      menuData: [
+        {
           name: '设备列表',
           icon: 'list',
           group: '/device',
           groupName: 'first',
           to: '/device/list'
-        },{
+        },
+        {
           name: '视频列表',
           icon: 'videocam',
           group: '/stream',
           groupName: 'first',
           to: '/stream/list'
-        },{
+        },
+        {
           name: '定时任务',
           icon: 'watch_later',
           group: '/schedule',
           groupName: 'first',
           to: '/schedule/list'
-        }, {
+        },
+        {
           name: '视频质量检测',
           icon: 'view_in_ar',
           group: '/videoQualityDetect',
           groupName: 'first',
-          children: [{
+          children: [
+            {
               name: '算法列表',
               group: '/videoQualityDetect',
               to: '/videoQualityDetect/strategy/list'
@@ -80,13 +85,15 @@ export default {
               group: '/videoQualityDetect',
               to: '/videoQualityDetect/manual'
             }]
-        },{
-        name: 'API 接口文档',
-        icon: 'description',
-        group: '/api',
-        groupName: 'first',
-        to: '/api/list'
-      }]
+        },
+        {
+          name: 'API 接口文档',
+          icon: 'description',
+          group: '/api',
+          groupName: 'first',
+          to: '/api/list'
+        }
+      ]
     }
   }
 }
